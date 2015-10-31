@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module FoldVersion where
 
 import Shared
