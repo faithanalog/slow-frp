@@ -15,7 +15,7 @@ stack build
 
 The reactive version is now on par with the foldM version in terms of speed.
 The solution, as suggested by the author of reactive-banana, was to
-break the audio up into chunks for processing. This significant reduces the
+break the audio up into chunks for processing. This significantly reduces the
 overhead of the FRP abstraction. I have done this, grouping the samples
 into unboxed vectors of doubles. I have also increased the number
 of oscillators to 3, and added a low-pass filter controlled by an LFO,
