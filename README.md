@@ -23,5 +23,5 @@ to prove that even with added complexity the reactive version can
 maintain it's speed.
 
 The foldM version has also been increased to 3 oscillators, but
-does not has a low-pass because I didn't feel like spending the
-time adding one.
+does not have a low-pass, because I didn't feel like spending the
+time to add one.
