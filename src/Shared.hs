@@ -9,7 +9,7 @@ type Frequency = Double
 type Phase = Double
 type DeltaTime = Double
 
-data Waveform = SineWave | SquareWave | SawWave | TriangleWave
+data Waveform = SineWave | CosineWave | SquareWave | SawWave | TriangleWave
 
 sampleWaveform :: Waveform -> Phase -> Sample
 sampleWaveform wv t
@@ -17,6 +17,9 @@ sampleWaveform wv t
 
 sampleWaveform SineWave t =
   sin (pi * 2 * t)
+
+sampleWaveform CosineWave t =
+  sampleWaveform SineWave (t - 0.25)
 
 sampleWaveform SquareWave t
   | t <= 0.5 = 1.0

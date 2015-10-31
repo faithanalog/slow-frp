@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module FoldVersion where
 
 import Shared
@@ -6,29 +7,28 @@ import System.IO (stdout)
 import Data.ByteString.Builder
 
 exec :: IO ()
-exec = do
+exec =
+  playNotes
+    (SynthState
+      [ mkOsc SawWave 1.0
+      , mkOsc SawWave (0.5 * 0.999)
+      , mkOsc SawWave (2.0 * 1.001) ]
+      0.0)
+    furEliseNotes
 
-  let f synth (hz, time) = do
+playNotes :: SynthState -> [(Frequency, Double)] -> IO ()
+playNotes startSynth notes = do
+  let f synth (note, time) = do
         let numSamples = floor (time * 44100)
             samples = replicate numSamples (1 / 44100)
-            synth' = setSynthFreq hz synth
+            synth' = setSynthFreq note synth
 
         foldM (\sn dt -> do
           let sn' = stepSynth dt sn
               sample = sampleSynth sn' * 0.1
           hPutBuilder stdout (int16LE (toPCM sample))
-          return sn') synth' samples
-
-
-      mkOsc x = Oscillator SawWave x 0.0
-
-
-      startSynth = SynthState
-                    [ mkOsc 1.0 ]
-                    0.0
-
-
-  foldM_ f startSynth furEliseNotes
+          return sn') synth' samples 
+  foldM_ f startSynth notes
 
 data Oscillator
   = Oscillator
@@ -38,6 +38,9 @@ data Oscillator
   }
 
 data SynthState = SynthState ![Oscillator] !Frequency
+
+mkOsc :: Waveform -> Double -> Oscillator
+mkOsc w x = Oscillator w x 0.0
 
 stepOsc :: Frequency -> DeltaTime -> Oscillator -> Oscillator
 stepOsc hz dt osc =
