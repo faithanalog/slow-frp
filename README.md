@@ -1,4 +1,4 @@
-#Why is this slow?
+#~~Why is this slow?~~ Not slow anymore, see below.
 
 To test:
 
